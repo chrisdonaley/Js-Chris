@@ -14,7 +14,7 @@ function corroboro_datos(nombre, apellido, direccion){
         
         if (direccion == "") {
             alert(nombre + " debe ingresar la dirección en la cual desea recibir su pedido")
-        } else {alert("Sr "+ nombre + " " + apellido + " elija lo que desea pedir, para enviarlo a la brevedad a :"+direccion)}
+        } else {alert("Sr "+ nombre + " " + apellido + " elija lo que desea pedir, para enviarlo a la brevedad a :"+ direccion)}
     }
 }
 
