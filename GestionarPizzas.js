@@ -53,24 +53,9 @@ class GestionarPizzas {
                 const {id,gusto,precio,img,descripcion} = pizza
 
                 let prod = document.createElement("div");
-                prod.classList.add('col-12', 'h200', 'border', 'bg-white', 'rounded', 'mt-3', 'd-flex', 'align-items-center', 'p-3', 'flex-row', 'producto');
+                prod.classList.add();
                 prod.id = "row_"+id;
-                prod.innerHTML = `<div class="w-20">
-                                        <img src="./assets/img/${img}" alt="" width="150" height="150" >
-                                  </div>
-
-                                  <div class="p-3 d-flex flex-column w-60 h-150">
-                                  <h3>${gusto}</h3>                                            
-                                  <p>${descripcion.substring(0,120)}</p>
-                              </div>
-
-                                  <div class="d-flex align-items-center justify-content-center flex-column w-20 h-150">
-                                  <p class="precio">$${precio}</p>
-                                  <a href="javascript:addCarrito(${id})" class="btn btn-primary">Agregar al carrito</a>
-                                 </div>
-
-
-                                `;
+                prod.innerHTML = ``;
 
 
                 divProductos.appendChild(prod);
