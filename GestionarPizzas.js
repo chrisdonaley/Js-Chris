@@ -154,9 +154,4 @@ actualizarCarrito(){
 
 }
 
-guardarCarrito(){
-
-    //desarrollar
-
-}
 }
