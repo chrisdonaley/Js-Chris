@@ -39,7 +39,7 @@ class GestionarPizzas {
 
     cargarPizzas (pizzas){
         const divPizzas = document.querySelector("#pizzas");
-        divProductos.innerHTML = "";
+        divPizzas.innerHTML = "";
 
         if (pizzas.length == 0) {
 
@@ -70,7 +70,7 @@ class GestionarPizzas {
                                 </div>`;
 
 
-                divProductos.appendChild(prod);
+                divPizzas.appendChild(prod);
 
 
 
