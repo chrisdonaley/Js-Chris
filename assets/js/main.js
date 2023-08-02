@@ -51,7 +51,6 @@ function addCarrito(id){
     const prod = document.querySelector("#row_"+id);
 
     let titulo = prod.querySelector('h3').textContent;
-    //elimino el simbolo $ para poder convertir a numero
     let precio = prod.querySelector(".precio").textContent.substring(1,prod.querySelector(".precio").textContent.length);
     let img =  prod.querySelector("img").src;
 
