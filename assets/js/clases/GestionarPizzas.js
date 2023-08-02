@@ -177,9 +177,6 @@ class GestionarProductos {
         this.actualizarContador();
         this.mostrarCarrito();
 
-        this.guardarCarrito();
-
-
     }
 
 
