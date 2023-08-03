@@ -176,6 +176,7 @@ class GestionarProductos {
 
         this.actualizarContador();
         this.mostrarCarrito();
+        this.guardarCarrito();
 
     }
 
@@ -190,7 +191,7 @@ class GestionarProductos {
         carrito.forEach ((producto) =>{
 
 
-            const { id, nombre, precio, img, cantidad  } = producto;
+            const { id, gusto, precio, img, cantidad  } = producto;
 
             const row = document.createElement("div");
             row.classList.add("row");
@@ -300,7 +301,7 @@ class GestionarProductos {
                     duration: 2000 ,
                     gravity: "bottom"
     
-               }).showToast();
+            }).showToast();
 
             }
 
@@ -311,6 +312,10 @@ class GestionarProductos {
 
     }
 
+    guardarCarrito(){
 
-
+        localStorage.setItem(key_carrito, JSON.stringify(carrito));
+        let date = new Date();        
+        localStorage.setItem(key_actualizacion,date);
+    }
 }
