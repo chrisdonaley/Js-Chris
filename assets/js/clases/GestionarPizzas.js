@@ -202,7 +202,7 @@ class GestionarProductos {
                         </div>
 
                         <div class="col-3 d-flex align-items-center p-2 border-bottom">
-                            ${nombre}
+                            ${gusto}
                         </div>
 
                         <div class="col-3 d-flex align-items-center justify-content-end p-2 border-bottom">
