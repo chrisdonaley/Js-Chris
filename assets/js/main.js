@@ -3,15 +3,16 @@ let carrito = [] ;
 let productos =new Array () ;
 
 let gestor ;
-
-
+const key_actualizacion = "ultima_actualizacion";
 const key_carrito = "carrito";
 
 
 document.addEventListener("DOMContentLoaded",()=>{
 
     carrito = JSON.parse(localStorage.getItem(key_carrito)) || [] ;
+    let ingreso = localStorage.getItem(key_actualizacion);
 
+    ingreso ? console.log("Ultimo ingreso" + ingreso) : console.log("No se ha registrado el ultimo ingreso");
     gestor = new GestionarProductos() ;
     gestor.iniciar();
 
