@@ -10,6 +10,7 @@ class GestionarProductos {
                 "descripcion": "Pizza con aceitunas, tamaño grande",
                 "precio": 350,
                 "img": "aceituna.jpg",
+                "descuento": 1
             },
             {
                 "id": 2,
@@ -17,6 +18,7 @@ class GestionarProductos {
                 "descripcion": "Pizza Caprese, tamaño grande",
                 "precio": 370,
                 "img": "caprese.jpg",
+                "descuento": 1
             },
 
             {
@@ -25,6 +27,7 @@ class GestionarProductos {
                 "descripcion": "Pizza Muzzarella, tamaño mediano",
                 "precio": 250,
                 "img": "muzza.jpg",
+                "descuento": 0
             },
             {
                 "id": 4,
@@ -32,11 +35,21 @@ class GestionarProductos {
                 "descripcion": "Pizza Muzzarella con cheddar, tamaño mediano",
                 "precio": 300,
                 "img": "cheddar.jpg",
+                "descuento": 0
             }
 
         ]
+        
 
-
+        let productosconDescuento = productos.filter(prod => prod.descuento == 1);
+        
+        productosconDescuento.forEach(producto =>{
+            if(producto.id === 1 || producto.id === 2){
+                producto.precio = producto.precio*0.9;
+            }
+        });
+        
+        this.cargarProductos(productosconDescuento);
         
     }
 
@@ -287,8 +300,7 @@ class GestionarProductos {
             cancelButtonText : "Cancelar, deseo llevarlo!",
 
         }).then ((result) =>{
-
-
+            
             if (result.isConfirmed){
 
                 carrito=carrito.filter(articulo => articulo.id != id);
