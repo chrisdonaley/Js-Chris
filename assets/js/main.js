@@ -23,21 +23,21 @@ document.addEventListener("DOMContentLoaded",()=>{
 document.querySelector("#buscar").addEventListener("keyup",()=>{
 
 
-   let q = document.querySelector("#buscar").value ;
+    let q = document.querySelector("#buscar").value ;
 
-   if (q.length >= 2){
+    if (q.length >= 2){
 
     gestor.buscar(q);
 
 
 
-   }else{
+    }else{
 
     gestor.mostrarHeader("Todos los productos en stock");
     gestor.cargarProductos(productos);
 
 
-   }
+    }
 
 
 

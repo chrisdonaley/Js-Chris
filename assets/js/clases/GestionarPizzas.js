@@ -60,19 +60,19 @@ class GestionarProductos {
                 let prod = document.createElement("div");
                 prod.classList.add('col-12', 'h200', 'border', 'bg-white', 'rounded', 'mt-3', 'd-flex', 'align-items-center', 'p-3', 'flex-row', 'producto');
                 prod.id = "row_"+id;
-                prod.innerHTML = `<div class="w-20">
-                                        <img src="./assets/img/${img}" alt="" width="150" height="150" >
-                                  </div>
+                prod.innerHTML =`<div class="w-20">
+                                    <img src="./assets/img/${img}" alt="" width="150" height="150" >
+                                </div>
 
-                                  <div class="p-3 d-flex flex-column w-60 h-150">
-                                  <h3>${gusto}</h3>                                            
-                                  <p>${descripcion.substring(0,120)}</p>
-                              </div>
+                                <div class="p-3 d-flex flex-column w-60 h-150">
+                                <h3>${gusto}</h3>                                            
+                                <p>${descripcion.substring(0,120)}</p>
+                                </div>
 
-                                  <div class="d-flex align-items-center justify-content-center flex-column w-20 h-150">
-                                  <p class="precio">$${precio}</p>
-                                  <a href="javascript:addCarrito(${id})" class="btn btn-primary">Agregar al carrito</a>
-                                 </div>
+                                <div class="d-flex align-items-center justify-content-center flex-column w-20 h-150">
+                                <p class="precio">$${precio}</p>
+                                <a href="javascript:addCarrito(${id})" class="btn btn-primary">Agregar al carrito</a>
+                                </div>
 
 
                                 `;
@@ -143,8 +143,7 @@ class GestionarProductos {
                 duration: 2000 ,
                 gravity: "bottom"
 
-           }).showToast();
-           
+            }).showToast();
 
         }else{
 
@@ -157,7 +156,7 @@ class GestionarProductos {
                 duration: 2000 ,
                 gravity: "bottom"
 
-           }).showToast();
+            }).showToast();
 
 
         }
@@ -176,6 +175,7 @@ class GestionarProductos {
 
         this.actualizarContador();
         this.mostrarCarrito();
+        this.guardarCarrito();
 
     }
 
@@ -190,7 +190,7 @@ class GestionarProductos {
         carrito.forEach ((producto) =>{
 
 
-            const { id, nombre, precio, img, cantidad  } = producto;
+            const { id, gusto, precio, img, cantidad  } = producto;
 
             const row = document.createElement("div");
             row.classList.add("row");
@@ -202,7 +202,7 @@ class GestionarProductos {
                         </div>
 
                         <div class="col-3 d-flex align-items-center p-2 border-bottom">
-                            ${nombre}
+                            ${gusto}
                         </div>
 
                         <div class="col-3 d-flex align-items-center justify-content-end p-2 border-bottom">
@@ -224,7 +224,7 @@ class GestionarProductos {
 
 
 
-               detalleCarrito.append(row);         
+                detalleCarrito.append(row);         
 
         })
 
@@ -232,7 +232,7 @@ class GestionarProductos {
         row.classList.add("row");
 
         row.innerHTML = `
-                     <div class="col-4 d-flex align-items-center justify-content-start p-2 border-bottom">
+                    <div class="col-4 d-flex align-items-center justify-content-start p-2 border-bottom">
                         Total a pagar:
                     </div>
                     <div class="col-8 d-flex align-items-center justify-content-end p-2 border-bottom">
@@ -242,7 +242,7 @@ class GestionarProductos {
                     `;      
                         
 
-         detalleCarrito.appendChild(row);               
+        detalleCarrito.appendChild(row);               
 
 
     }
@@ -284,7 +284,7 @@ class GestionarProductos {
             showCancelButton : true ,
             cancelButtonColor : '#d33' ,
             confirmButtonText : "Si, eliminarlo",
-            cancelButtonText : "Cancelar, toque sin querer!",
+            cancelButtonText : "Cancelar, deseo llevarlo!",
 
         }).then ((result) =>{
 
@@ -296,11 +296,11 @@ class GestionarProductos {
 
                 Toastify({
 
-                    text : "Producto eliminado con exito",
+                    text : "Producto eliminado de la lista",
                     duration: 2000 ,
                     gravity: "bottom"
     
-               }).showToast();
+            }).showToast();
 
             }
 
@@ -311,6 +311,10 @@ class GestionarProductos {
 
     }
 
+    guardarCarrito(){
 
-
+        localStorage.setItem(key_carrito, JSON.stringify(carrito));
+        let date = new Date();        
+        localStorage.setItem(key_actualizacion,date);
+    }
 }
