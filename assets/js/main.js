@@ -1,68 +1,77 @@
+const pizzaContent = document.getElementById("pizzasContent");
+const cart = document.getElementById("verCarrito");
+const cartaContainer = document.getElementById("cartaCont");
 
 let carrito = [] ;
-let productos =new Array () ;
 
-let gestor ;
-const key_actualizacion = "ultima_actualizacion";
-const key_carrito = "carrito";
+pizzas.forEach((p) => {
+    const {id,nombre,precio,img,descripcion} = p;
+        let content = document.createElement("div");
+        content.className = "card";
+        content.innerHTML = `
+        <img src="./assets/img/${img}">
+        <h3>${nombre}</h3>
+        <p class="price">${precio}$</p>
+        <p>${descripcion}</p>
+        `;
 
+    pizzaContent.append(content);
 
-document.addEventListener("DOMContentLoaded",()=>{
+    let boton = document.createElement("button");
+    boton.innerText = "Agregar al carrito";
+    boton.className = "boton";
 
-    carrito = JSON.parse(localStorage.getItem(key_carrito)) || [] ;
-    let ingreso = localStorage.getItem(key_actualizacion);
+    content.append(boton);
 
-    ingreso ? console.log("Ultimo ingreso" + ingreso) : console.log("No se ha registrado el ultimo ingreso");
-    gestor = new GestionarProductos() ;
-    gestor.iniciar();
+    boton.addEventListener("click",()=>{
+        carrito.push({
+            id : p.id,
+            img: p.img,
+            nombre: p.nombre,
+            precio: p.precio,
+        });
+        console.log(carrito);
+    });
 
+});
 
-})
+verCarrito.addEventListener("click", ()=>{
+    cartaContainer.innerHTML="";
+    cartaContainer.style.display = "flex";
+    const carta = document.createElement("div");
+    carta.className = "carta";
+    carta.innerHTML = `
+    <h1 class = "carta-title">Compras</h1>
+    `;
+    cartaContainer.append(carta);
+    
+    const cartaboton = document.createElement("h1");
+    cartaboton.innerText = "X";
+    cartaboton.className = "carta-boton";
 
+    cartaboton.addEventListener("click", ()=>{
+        cartaContainer.style.display = "none";
+    });
 
-
-document.querySelector("#buscar").addEventListener("keyup",()=>{
-
-
-    let q = document.querySelector("#buscar").value ;
-
-    if (q.length >= 2){
-
-    gestor.buscar(q);
-
-
-
-    }else{
-
-    gestor.mostrarHeader("Todos los productos en stock");
-    gestor.cargarProductos(productos);
-
-
-    }
-
-
-
-
-
-
-})
-
-function addCarrito(id){
-
-    const prod = document.querySelector("#row_"+id);
-
-    let titulo = prod.querySelector('h3').textContent;
-    let precio = prod.querySelector(".precio").textContent.substring(1,prod.querySelector(".precio").textContent.length);
-    let img =  prod.querySelector("img").src;
-
-    let producto = new Producto (id,titulo,precio,img);
-
-    gestor.addCart(producto);
-
-}
-
-function eliminar(id){
-    gestor.eliminarProducto(id);
-}
+    carta.append (cartaboton);
 
 
+    carrito.forEach((p) => {
+        const {nombre,precio,img} = p;
+        let comprasContent = document.createElement("div");
+        comprasContent.className = "carrito-content";
+        comprasContent.innerHTML =`
+        <img src="./assets/img/${img}">
+        <h3>${nombre}</h3>
+        <p>$${precio}</p>
+        `
+
+        cartaContainer.append(comprasContent);
+    });
+
+    const total = carrito.reduce((acc, prod)=> acc + prod.precio, 0);
+    const totalCompra = document.createElement("div");
+    totalCompra.className= "total-content";
+    totalCompra.innerHTML=`Total de la compra: $${total}`;
+    cartaContainer.append(totalCompra);
+});
