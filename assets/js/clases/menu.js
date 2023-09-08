@@ -1,13 +1,12 @@
-class Producto {
+class pixa {
 
-    constructor (id,gusto,precio,img, tamaño){
+    constructor (id,nombre,precio,img, descripcion){
 
         this.id = id;
-        this.gusto = gusto;
+        this.nombre = nombre;
         this.precio= precio;
         this.img= img;
-        this.cantidad = 1;
-        this.tamaño = tamaño;
+        this.descripcion = descripcion;
 
     }
 
