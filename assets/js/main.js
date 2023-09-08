@@ -14,7 +14,7 @@ pizzas.forEach((p) => {
     let content = document.createElement("div");
     content.className = "card";
     content.innerHTML = `
-        <img src="./img/${img}">
+        <img src="./assets/img/${img}">
         <h3>${nombre}</h3>
         <p class="price">${precio}$</p>
         <p>${descripcion}</p>
@@ -78,7 +78,7 @@ function mostrarCarrito() {
         let comprasContent = document.createElement("div");
         comprasContent.className = "carrito-content";
         comprasContent.innerHTML = `
-        <img src="./img/${img}">
+        <img src="./assets/img/${img}">
         <h3>${nombre}</h3>
         <p>$${precio} x ${cantidad}</p>
         <button class="restar" data-id="${id}">➖</button>
