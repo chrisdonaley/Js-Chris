@@ -2,18 +2,23 @@ const pizzaContent = document.getElementById("pizzasContent");
 const cart = document.getElementById("verCarrito");
 const cartaContainer = document.getElementById("cartaCont");
 
-let carrito = [] ;
+let carrito = [];
+
+if (localStorage.getItem("carrito")) {
+    carrito = JSON.parse(localStorage.getItem("carrito"));
+    mostrarCarrito();
+}
 
 pizzas.forEach((p) => {
-    const {nombre,precio,img,descripcion} = p;
-        let content = document.createElement("div");
-        content.className = "card";
-        content.innerHTML = `
-        <img src="./assets/img/${img}">
+    const { id, nombre, precio, img, descripcion } = p;
+    let content = document.createElement("div");
+    content.className = "card";
+    content.innerHTML = `
+        <img src="./img/${img}">
         <h3>${nombre}</h3>
         <p class="price">${precio}$</p>
         <p>${descripcion}</p>
-        `;
+    `;
 
     pizzaContent.append(content);
 
@@ -23,55 +28,83 @@ pizzas.forEach((p) => {
 
     content.append(boton);
 
-    boton.addEventListener("click",()=>{
-        carrito.push({
-            id : p.id,
-            img: p.img,
-            nombre: p.nombre,
-            precio: p.precio,
-        });
-        console.log(carrito);
-    });
+    boton.addEventListener("click", () => {
+        const existeP = carrito.findIndex((item) => item.id === id);
+        if (existeP !== -1) {
+            carrito[existeP].cantidad += 1;
+        } else {
+            carrito.push({
+                id: p.id,
+                img: p.img,
+                nombre: p.nombre,
+                precio: p.precio,
+                cantidad: 1, 
+            });
+        }
 
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+
+        console.log(carrito);
+        mostrarCarrito();
+    });
 });
 
-verCarrito.addEventListener("click", ()=>{
-    cartaContainer.innerHTML="";
+verCarrito.addEventListener("click", () => {
+    mostrarCarrito();
+});
+
+function mostrarCarrito() {
+    cartaContainer.innerHTML = "";
     cartaContainer.style.display = "flex";
     const carta = document.createElement("div");
     carta.className = "carta";
     carta.innerHTML = `
-    <h1 class = "carta-title">Compras</h1>
+    <h1 class="carta-title">Compras</h1>
     `;
     cartaContainer.append(carta);
-    
+
     const cartaboton = document.createElement("h1");
     cartaboton.innerText = "X";
     cartaboton.className = "carta-boton";
 
-    cartaboton.addEventListener("click", ()=>{
+    cartaboton.addEventListener("click", () => {
         cartaContainer.style.display = "none";
     });
 
-    carta.append (cartaboton);
-
+    carta.append(cartaboton);
 
     carrito.forEach((p) => {
-        const {nombre,precio,img} = p;
+        const { id, nombre, precio, img, descripcion, cantidad } = p;
         let comprasContent = document.createElement("div");
         comprasContent.className = "carrito-content";
-        comprasContent.innerHTML =`
-        <img src="./assets/img/${img}">
+        comprasContent.innerHTML = `
+        <img src="./img/${img}">
         <h3>${nombre}</h3>
-        <p>$${precio}</p>
-        `
+        <p>$${precio} x ${cantidad}</p>
+        <button class="restar" data-id="${id}">➖</button>
+        `;
+
+        const botonRestar = comprasContent.querySelector(".restar");
+        botonRestar.addEventListener("click", () => {
+            const index = carrito.findIndex((item) => item.id === id);
+            if (index !== -1) {
+                if (carrito[index].cantidad > 1) {
+                    carrito[index].cantidad -= 1;
+                } else {
+                    carrito.splice(index, 1);
+                }
+                mostrarCarrito();
+            }
+            
+            localStorage.setItem("carrito", JSON.stringify(carrito));
+        });
 
         cartaContainer.append(comprasContent);
     });
 
-    const total = carrito.reduce((acc, prod)=> acc + prod.precio, 0);
+    const total = carrito.reduce((acc, prod) => acc + prod.precio * prod.cantidad, 0);
     const totalCompra = document.createElement("div");
-    totalCompra.className= "total-content";
-    totalCompra.innerHTML=`Total de la compra: $${total}`;
+    totalCompra.className = "total-content";
+    totalCompra.innerHTML = `Total de la compra: $${total}`;
     cartaContainer.append(totalCompra);
-});
+}
