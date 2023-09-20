@@ -2,6 +2,8 @@ const pizzaContent = document.getElementById("pizzasContent");
 const cart = document.getElementById("verCarrito");
 const cartaContainer = document.getElementById("cartaCont");
 
+const url = './data.json';
+
 let carrito = []; //carrito vacio
 
 if (localStorage.getItem("carrito")) {
@@ -9,45 +11,79 @@ if (localStorage.getItem("carrito")) {
     mostrarCarrito();
 }
 
-pizzas.forEach((p) => { //creamos las cartas de cada producto
-    const { id, nombre, precio, img, descripcion } = p;
-    let content = document.createElement("div");
-    content.className = "card";
-    content.innerHTML = `
-        <img src="./assets/img/${img}">
-        <h3>${nombre}</h3>
-        <p class="price">${precio}$</p>
-        <p>${descripcion}</p>
-    `;
-
-    pizzaContent.append(content);
-
-    let boton = document.createElement("button");
-    boton.innerText = "Agregar al carrito";
-    boton.className = "boton";
-
-    content.append(boton);
-
-    boton.addEventListener("click", () => { //aca vamos agregando los productos al carrito.
-        const existeP = carrito.findIndex((item) => item.id === id);
-        if (existeP !== -1) {
-            carrito[existeP].cantidad += 1;
-        } else {
-            carrito.push({
-                id: p.id,
-                img: p.img,
-                nombre: p.nombre,
-                precio: p.precio,
-                cantidad: 1, 
-            });
+async function cargarpizzasDesdeJSON() { //cargamos las pizzas desde la url del json
+    try {
+        const response = await fetch(url); 
+        if (!response.ok) {
+            throw new Error("Error al cargar los pizzas");
         }
 
-        localStorage.setItem("carrito", JSON.stringify(carrito));
+        const pizzas = await response.json();
 
-        console.log(carrito);
-        mostrarCarrito();
-    });
-});
+        // Llama a la función para mostrar los pizzas en la interfaz
+        mostrarpizzas(pizzas);
+    } catch (error) {
+        console.error(error);
+    }
+}
+function mostrarpizzas() {
+    fetch('data.json') //cargamos los datos desde data.json
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los pizzas");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            const pizzas = data.pizzas; 
+            
+            pizzas.forEach((p) => { //creamos las cards
+                const { id, nombre, precio, img, descripcion } = p;
+                let content = document.createElement("div");
+                content.className = "card";
+                content.innerHTML = `
+                    <img src="./assets/img/${img}">
+                    <h3>${nombre}</h3>
+                    <p class="price">${precio}$</p>
+                    <p>${descripcion}</p>
+                `;
+
+                pizzaContent.append(content);
+
+                let boton = document.createElement("button"); //agregamos boton de agregar al carrito
+                boton.innerText = "Agregar al carrito";
+                boton.className = "boton";
+
+                content.append(boton);
+
+                boton.addEventListener("click", () => {
+                    const existeP = carrito.findIndex((item) => item.id === id);
+                    if (existeP !== -1) {
+                        carrito[existeP].cantidad += 1;
+                    } else {
+                        carrito.push({
+                            id: p.id,
+                            img: p.img,
+                            nombre: p.nombre,
+                            precio: p.precio,
+                            cantidad: 1, 
+                        });
+                    }
+
+                    localStorage.setItem("carrito", JSON.stringify(carrito));
+
+                    console.log(carrito);
+                    mostrarCarrito();
+                });
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+cargarpizzasDesdeJSON();
+
 
 verCarrito.addEventListener("click", () => {  //cuando presionamos para poder ver el carrito
     mostrarCarrito();
@@ -73,7 +109,7 @@ function mostrarCarrito() {  // funcion que muestra el carrito
 
     carta.append(cartaboton);
 
-    carrito.forEach((p) => {  //dentro el carrito, creamos la parte que los agrega y muestra para restar y los datos de los productos agregados.
+    carrito.forEach((p) => {  //dentro el carrito, creamos la parte que los agrega y muestra para restar y los datos de los pizzas agregados.
         const { id, nombre, precio, img, descripcion, cantidad } = p;
         let comprasContent = document.createElement("div");
         comprasContent.className = "carrito-content";
